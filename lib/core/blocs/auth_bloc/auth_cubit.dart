@@ -52,10 +52,9 @@ class AuthCubit extends Cubit<AuthState> {
         .doc(uId)
         .set(model.toMap())
         .then((value) {
-          print(name);
-          print(uId);
-      emit(SuccessCreateUser());
+      emit(SuccessCreateUser(userModel: model));
     }).catchError((e) {
+      print(e.toString());
       emit(ErrorCreateUser(error: e.toString()));
     });
   }
@@ -68,6 +67,7 @@ class AuthCubit extends Cubit<AuthState> {
       print(value.user!.uid);
       emit(LoginSuccessState());
     }).catchError((e) {
+      print(e.toString());
       emit(LoginErrorState(error: e.toString()));
     });
   }

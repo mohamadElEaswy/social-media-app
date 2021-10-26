@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_cubit.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_states.dart';
+import 'package:untitled/core/data/local/cache_helper.dart';
+import 'package:untitled/core/data/local/constant_uid.dart';
 import 'package:untitled/core/routes/constant_route_functions.dart';
 import 'package:untitled/ui/screens/home_screen/home_screen.dart';
 import 'package:untitled/ui/widgets/default_form_button.dart';
@@ -27,8 +29,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     var formKey = GlobalKey<FormState>();
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if(state is SuccessCreateUser){
-          navigateAndRemove(context: context, namedRoute: HomeScreen.routeName);
+        if (state is SuccessCreateUser) {
+          CacheHelper.saveData(key: 'uId', value: state.userModel.uId)
+              .then((value) {
+            uId = state.userModel.uId!;
+            navigateAndRemove(
+                context: context, namedRoute: HomeScreen.routeName);
+          }).catchError((e) {});
         }
       },
       builder: (context, state) {

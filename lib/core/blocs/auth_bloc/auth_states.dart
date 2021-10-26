@@ -1,3 +1,5 @@
+import 'package:untitled/core/models/user_model.dart';
+
 abstract class AuthState{}
 
 class LoginInitState extends AuthState{}
@@ -18,7 +20,11 @@ class ErrorRegisterState extends AuthState{
   ErrorRegisterState({required this.error});
 }
 class LoadingCreateUser extends AuthState{}
-class SuccessCreateUser extends AuthState{}
+class SuccessCreateUser extends AuthState{
+  final UserModel userModel;
+
+  SuccessCreateUser({required this.userModel});
+}
 class ErrorCreateUser extends AuthState{
   final String error;
 
