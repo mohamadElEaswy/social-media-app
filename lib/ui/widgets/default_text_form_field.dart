@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:untitled/config/theme/constatnt_colors.dart';
 
 class DefaultTextFormField extends StatelessWidget {
+
   const DefaultTextFormField({
     Key? key,
-    obscureText,
+    required this.obscureText,
     this.suffixIcon,
     this.prefixIcon,
     this.suffixOnPressed,
@@ -14,7 +15,6 @@ class DefaultTextFormField extends StatelessWidget {
     required this.validator,
     required this.hintText,
   }) : super(key: key);
-  final bool obscureText = false;
   final TextInputType keyboardType;
   final TextEditingController controller;
   final Function onFieldSubmitted;
@@ -23,7 +23,9 @@ class DefaultTextFormField extends StatelessWidget {
   final String? hintText;
   final IconData? suffixIcon;
   final IconData? prefixIcon;
-  // String value;
+  final bool obscureText;
+
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(

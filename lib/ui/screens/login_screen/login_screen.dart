@@ -1,46 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:untitled/core/blocs/auth_bloc/auth_cubit.dart';
+import 'package:untitled/core/blocs/auth_bloc/auth_states.dart';
+import 'package:untitled/core/routes/constant_route_functions.dart';
+import 'package:untitled/ui/screens/register_screen/register_screen.dart';
+import 'package:untitled/ui/widgets/default_form_button.dart';
 import 'package:untitled/ui/widgets/default_text_form_field.dart';
+
 final TextEditingController nameController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
-  static const String routeName= '/login';
+  static const String routeName = '/login';
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     var formKey = GlobalKey<FormState>();
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(8.0),
-          child: Form(key: formKey,
-            child: Column(
-              children: [
-                DefaultTextFormField(
-                  onFieldSubmitted: (String? value){},
-                  validator: (String? value){},
-                  controller: nameController,
-                  keyboardType: TextInputType.emailAddress,
-                  prefixIcon: Icons.person,
-                  hintText: 'user email',
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        AuthCubit cubit = AuthCubit.get(context);
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Log In'),
+            centerTitle: true,
+          ),
+          body: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    DefaultTextFormField(
+                      obscureText: false,
+                      onFieldSubmitted: (String? value) {},
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'please enter your email';
+                        }
+                      },
+                      controller: nameController,
+                      keyboardType: TextInputType.emailAddress,
+                      prefixIcon: Icons.person,
+                      hintText: 'user email',
+                    ),
+                    const SizedBox(height: 10.0),
+                    DefaultTextFormField(
+                      obscureText: cubit.obscureText,
+                      onFieldSubmitted: (String? value) {},
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'please enter your password';
+                        }
+                      },
+                      controller: passwordController,
+                      keyboardType: TextInputType.text,
+                      prefixIcon: Icons.mail,
+                      suffixIcon: Icons.password,
+                      hintText: 'password',
+                      suffixOnPressed: () => cubit.obscurePassword(),
+                    ),
+                    const SizedBox(height: 20.0),
+                    DefaultFormButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          cubit.userLogin(
+                              email: emailController.text,
+                              password: passwordController.text);
+                        }
+                      },
+                      text: 'log in',
+                    ),
+                    const SizedBox(height: 10.0),
+                    const Text('Or'),
+                    const SizedBox(height: 10.0),
+                    DefaultFormButton(
+                      onPressed: () {
+                        navigate(
+                          context: context,
+                          namedRoute: RegisterScreen.routeName,
+                        );
+                      },
+                      text: 'register',
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10.0,),
-                DefaultTextFormField(
-                  onFieldSubmitted: (String? value){},
-                  validator: (String? value){},
-                  controller: nameController,
-                  keyboardType: TextInputType.text,
-                  prefixIcon: Icons.mail,
-                  suffixIcon: Icons.password,
-                  hintText: 'email address',suffixOnPressed: (){},
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
