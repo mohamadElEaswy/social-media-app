@@ -29,14 +29,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     var formKey = GlobalKey<FormState>();
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is SuccessCreateUser) {
-          CacheHelper.saveData(key: 'uId', value: state.userModel.uId)
-              .then((value) {
-            uId = state.userModel.uId!;
-            navigateAndRemove(
-                context: context, namedRoute: HomeScreen.routeName);
-          }).catchError((e) {});
-        }
+        // if (state is SuccessCreateUser) {
+        //   CacheHelper.saveData(key: 'uId', value: state.userModel.uId)
+        //       .then((value) {
+        //     userId = state.userModel.uId!;
+        //     navigateAndRemove(
+        //         context: context, namedRoute: HomeScreen.routeName);
+        //   }).catchError((e) {});
+        // }
       },
       builder: (context, state) {
         AuthCubit cubit = AuthCubit.get(context);
@@ -137,7 +137,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               email: emailController.text,
                               password: passwordController.text,
                               name: nameController.text,
-                              phone: phoneController.text);
+                              phone: phoneController.text,
+                          namedRoute: HomeScreen.routeName,
+                            context: context
+                          );
                         }
                       },
                       text: 'register',

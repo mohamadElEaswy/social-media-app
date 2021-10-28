@@ -7,20 +7,24 @@ import 'package:untitled/core/blocs/auth_bloc/auth_cubit.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_states.dart';
 import 'package:untitled/core/data/local/cache_helper.dart';
 import 'package:untitled/core/data/local/constant_uid.dart';
-import 'package:untitled/core/routes/routes.dart';
+import 'package:untitled/core/routes/routes.dart' as route ;
 import 'package:untitled/ui/screens/home_screen/home_screen.dart';
 import 'package:untitled/ui/screens/login_screen/login_screen.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Bloc.observer = MyBlocObserver();
+
+  //shared preference
   await CacheHelper.init();
-  uId = CacheHelper.getData(key: 'uId')?? '';
+  userId = CacheHelper.getData(key: 'uId') ?? '';
+
+  //check if  there is saved uId == (token)
+  //to show home screen or login page
   String? initRoute;
-  if(uId!.isNotEmpty){
-    initRoute = HomeScreen.routeName;
-  }else{initRoute = LoginScreen.routeName;}
+  if(userId.isEmpty){
+    initRoute = LoginScreen.routeName;
+  }else{initRoute = HomeScreen.routeName;}
   runApp(MyApp(initRoute: initRoute,));
 }
 
@@ -32,24 +36,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        //user management cubit (login and register)
         BlocProvider<AuthCubit>(
           create: (BuildContext context) => AuthCubit(),
-        ),BlocProvider<AppCubit>(
-          create: (BuildContext context) => AppCubit(),
+        ),
+        // after login or register cubit
+        BlocProvider<AppCubit>(
+          create: (BuildContext context) => AppCubit()..getUserData(),
         ),
       ],
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, index) {},
         builder: (context, index) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Social app',
             theme: ThemeData(
               primarySwatch: Colors.blue,
               appBarTheme: const AppBarTheme(
                 elevation: 0.0,
               ),
             ),
-            onGenerateRoute: RouteGenerator.generateRoute,
+            onGenerateRoute: route.RouteGenerator.generateRoute
+            // RouteGenerator.generateRoute
+            ,
             initialRoute: initRoute,
           );
         },

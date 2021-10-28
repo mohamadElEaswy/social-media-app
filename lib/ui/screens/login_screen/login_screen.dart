@@ -27,14 +27,14 @@ class _LoginScreenState extends State<LoginScreen> {
     var formKey = GlobalKey<FormState>();
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is SuccessCreateUser) {
-          CacheHelper.saveData(key: 'uId', value: state.userModel.uId)
-              .then((value) {
-            uId = state.userModel.uId!;
-            navigateAndRemove(
-                context: context, namedRoute: HomeScreen.routeName);
-          }).catchError((e) {});
-        }
+        // if (state is SuccessCreateUser) {
+        //   CacheHelper.saveData(key: 'uId', value: state.userModel.uId)
+        //       .then((value) {
+        //     userId = state.userModel.uId!;
+        //     navigateAndRemove(
+        //         context: context, namedRoute: HomeScreen.routeName);
+        //   }).catchError((e) {});
+        // }
       },
       builder: (context, state) {
         AuthCubit cubit = AuthCubit.get(context);
@@ -85,7 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (formKey.currentState!.validate()) {
                           cubit.userLogin(
                               email: emailController.text,
-                              password: passwordController.text);
+                              password: passwordController.text,
+                          context: context, namedRoute: HomeScreen.routeName
+                          );
                         }
                       },
                       text: 'log in',
