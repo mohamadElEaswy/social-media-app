@@ -63,7 +63,6 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(SuccessCreateUser(userModel: model));
     }).catchError((e) {
-      print(e.toString());
       emit(ErrorCreateUser(error: e.toString()));
     });
   }
@@ -73,13 +72,13 @@ class AuthCubit extends Cubit<AuthState> {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) async {
-      // print(value.user!.uid);
-      userId = await CacheHelper.saveData(key: 'uId', value: value.user!.uid);
-      navigateAndRemove(
+      await CacheHelper.saveData(key: 'uId', value: value.user!.uid);
+      userId = value.user!.uid;
+          navigateAndRemove(
           context: context, namedRoute: namedRoute);
       emit(LoginSuccessState());
     }).catchError((e) {
-      print(e.toString());
+      // print(e.toString());
       emit(LoginErrorState(error: e.toString()));
     });
   }

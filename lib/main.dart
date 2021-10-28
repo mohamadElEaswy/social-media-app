@@ -22,7 +22,7 @@ void main() async {
   //check if  there is saved uId == (token)
   //to show home screen or login page
   String? initRoute;
-  if(userId.isEmpty){
+  if(userId!.isEmpty){
     initRoute = LoginScreen.routeName;
   }else{initRoute = HomeScreen.routeName;}
   runApp(MyApp(initRoute: initRoute,));
