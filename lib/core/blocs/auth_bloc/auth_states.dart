@@ -4,7 +4,11 @@ abstract class AuthState{}
 
 class LoginInitState extends AuthState{}
 class LoginLoadingState extends AuthState{}
-class LoginSuccessState extends AuthState{}
+class LoginSuccessState extends AuthState{
+  final String? userName;
+
+  LoginSuccessState({required this.userName});
+}
 class LoginErrorState extends AuthState{
   final String error;
 

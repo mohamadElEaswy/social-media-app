@@ -8,3 +8,7 @@ class GetUserErrorState extends AppState{
 
   GetUserErrorState({required this.error});
 }
+
+
+class ChangeBottomNav extends AppState{}
+class SocialNewPostState extends AppState{}

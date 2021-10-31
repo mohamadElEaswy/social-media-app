@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/config/theme/constatnt_colors.dart';
+import 'package:untitled/config/theme/constant_colors.dart';
 
 class DefaultTextFormField extends StatelessWidget {
 

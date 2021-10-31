@@ -76,7 +76,7 @@ class AuthCubit extends Cubit<AuthState> {
       userId = value.user!.uid;
           navigateAndRemove(
           context: context, namedRoute: namedRoute);
-      emit(LoginSuccessState());
+      emit(LoginSuccessState(userName: value.user!.displayName));
     }).catchError((e) {
       // print(e.toString());
       emit(LoginErrorState(error: e.toString()));

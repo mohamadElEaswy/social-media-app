@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/bloc_observer.dart';
+import 'package:untitled/config/theme/theme.dart';
 import 'package:untitled/core/blocs/app_bloc/app_cubit.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_cubit.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_states.dart';
@@ -50,12 +51,7 @@ class MyApp extends StatelessWidget {
         builder: (context, index) {
           return MaterialApp(
             title: 'Social app',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-              appBarTheme: const AppBarTheme(
-                elevation: 0.0,
-              ),
-            ),
+            theme: lightTheme,
             onGenerateRoute: route.RouteGenerator.generateRoute
             // RouteGenerator.generateRoute
             ,

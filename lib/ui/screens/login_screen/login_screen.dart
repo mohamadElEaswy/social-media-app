@@ -7,6 +7,7 @@ import 'package:untitled/ui/screens/home_screen/home_screen.dart';
 import 'package:untitled/ui/screens/register_screen/register_screen.dart';
 import 'package:untitled/ui/widgets/default_form_button.dart';
 import 'package:untitled/ui/widgets/default_text_form_field.dart';
+import 'package:untitled/ui/widgets/snack_bar.dart';
 
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
@@ -33,6 +34,10 @@ class _LoginScreenState extends State<LoginScreen> {
         //         context: context, namedRoute: HomeScreen.routeName);
         //   }).catchError((e) {});
         // }
+
+        if (state is LoginSuccessState) {
+          SnackBars.buildSnackBar(context: context, text: 'welcome' + state.userName.toString(), backgroundColor: Colors.green);
+        }
       },
       builder: (context, state) {
         AuthCubit cubit = AuthCubit.get(context);
@@ -84,8 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           cubit.userLogin(
                               email: emailController.text,
                               password: passwordController.text,
-                          context: context, namedRoute: HomeScreen.routeName
-                          );
+                              context: context,
+                              namedRoute: HomeScreen.routeName);
                         }
                       },
                       text: 'log in',
