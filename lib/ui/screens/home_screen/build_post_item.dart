@@ -20,8 +20,7 @@ class BuildPostItem extends StatelessWidget {
                 const CircleAvatar(
                   radius: 25.0,
                   backgroundImage: NetworkImage(
-                    'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg',
-                  ),
+                      'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg'),
                 ),
                 const SizedBox(width: 15.0),
                 Expanded(
@@ -32,9 +31,7 @@ class BuildPostItem extends StatelessWidget {
                         children: const [
                           Text(
                             'Abdullah Mansour',
-                            style: TextStyle(
-                              height: 1.4,
-                            ),
+                            style: TextStyle(height: 1.4),
                           ),
                           SizedBox(width: 5.0),
                           Icon(
@@ -46,9 +43,10 @@ class BuildPostItem extends StatelessWidget {
                       ),
                       Text(
                         'January 21, 2021 at 11:00 pm',
-                        style: Theme.of(context).textTheme.caption!.copyWith(
-                              height: 1.4,
-                            ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(height: 1.4),
                       ),
                     ],
                   ),
@@ -94,10 +92,10 @@ class BuildPostItem extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           child: Text(
                             '#software',
-                            style:
-                                Theme.of(context).textTheme.caption!.copyWith(
-                                      color: defaultColor,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption!
+                                .copyWith(color: defaultColor),
                           ),
                         ),
                       ),
@@ -112,10 +110,10 @@ class BuildPostItem extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           child: Text(
                             '#flutter',
-                            style:
-                                Theme.of(context).textTheme.caption!.copyWith(
-                                      color: defaultColor,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption!
+                                .copyWith(color: defaultColor),
                           ),
                         ),
                       ),

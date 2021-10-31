@@ -14,7 +14,7 @@ final TextEditingController passwordController = TextEditingController();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
-  static const String routeName = '/login';
+  static const String routeName = '/';
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
         AuthCubit cubit = AuthCubit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Log In'),
+            // title: Text(cubit.model.name.toString()),
             centerTitle: true,
           ),
           body: Center(

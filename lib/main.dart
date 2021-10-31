@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/bloc_observer.dart';
 import 'package:untitled/config/theme/theme.dart';
-import 'package:untitled/core/blocs/app_bloc/app_cubit.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_cubit.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_states.dart';
 import 'package:untitled/core/data/local/cache_helper.dart';
 import 'package:untitled/core/data/local/constant_uid.dart';
-import 'package:untitled/core/routes/routes.dart' as route ;
+import 'package:untitled/core/routes/routes.dart';
 import 'package:untitled/ui/screens/home_screen/home_screen.dart';
 import 'package:untitled/ui/screens/login_screen/login_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -23,14 +23,21 @@ void main() async {
   //check if  there is saved uId == (token)
   //to show home screen or login page
   String? initRoute;
-  if(userId!.isEmpty){
+  if (userId!.isEmpty) {
     initRoute = LoginScreen.routeName;
-  }else{initRoute = HomeScreen.routeName;}
-  runApp(MyApp(initRoute: initRoute,));
+  } else {
+    initRoute = HomeScreen.routeName;
+  }
+  runApp(MyApp(
+    initRoute: initRoute,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.initRoute,}) : super(key: key);
+  const MyApp({
+    Key? key,
+    required this.initRoute,
+  }) : super(key: key);
   final String? initRoute;
   // This widget is the root of your application.
   @override
@@ -39,12 +46,12 @@ class MyApp extends StatelessWidget {
       providers: [
         //user management cubit (login and register)
         BlocProvider<AuthCubit>(
-          create: (BuildContext context) => AuthCubit(),
+          create: (BuildContext context) => AuthCubit()..getUserData(),
         ),
         // after login or register cubit
-        BlocProvider<AppCubit>(
-          create: (BuildContext context) => AppCubit()..getUserData(),
-        ),
+        // BlocProvider<AppCubit>(
+        //   create: (BuildContext context) => AppCubit(),
+        // ),
       ],
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, index) {},
@@ -52,9 +59,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Social app',
             theme: lightTheme,
-            onGenerateRoute: route.RouteGenerator.generateRoute
-            // RouteGenerator.generateRoute
-            ,
+            onGenerateRoute: RouteGenerator.generateRoute,
             initialRoute: initRoute,
           );
         },

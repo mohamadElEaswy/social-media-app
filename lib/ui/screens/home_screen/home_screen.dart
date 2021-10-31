@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/config/theme/icon_broken.dart';
-import 'package:untitled/core/blocs/app_bloc/app_cubit.dart';
-import 'package:untitled/core/blocs/app_bloc/app_state.dart';
+import 'package:untitled/core/blocs/auth_bloc/auth_cubit.dart';
+import 'package:untitled/core/blocs/auth_bloc/auth_states.dart';
 import 'package:untitled/core/data/end_points.dart';
 import 'package:untitled/core/routes/constant_route_functions.dart';
 import 'package:untitled/ui/screens/add_post/add_post.dart';
@@ -16,18 +16,18 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is GetUserSuccessState) {
           SnackBars.buildSnackBar(
-              context: context, text: 'welcome', backgroundColor: Colors.green);
+              context: context, text: 'welcome ' + state.model.name, backgroundColor: Colors.green);
         }
         if (state is SocialNewPostState) {
           navigate(context: context, namedRoute: AddPostScreen.routeName);
         }
       },
       builder: (context, state) {
-        AppCubit cubit = AppCubit.get(context);
+        AuthCubit cubit = AuthCubit.get(context);
         return Scaffold(
           bottomNavigationBar: BottomNavigationBar(
             items: cubit.bottomItems,
@@ -37,6 +37,7 @@ class HomeScreen extends StatelessWidget {
             },
           ),
           appBar: AppBar(
+              leading:  Container(),
               actions: [
                 IconButton(
                   icon: const Icon(
@@ -51,7 +52,6 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () {},
                 ),
               ],
-              leading: const SizedBox(),
               title: Text(cubit.titles[cubit.currentIndex])),
           body: cubit.screens[cubit.currentIndex],
         );

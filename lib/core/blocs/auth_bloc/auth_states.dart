@@ -35,3 +35,20 @@ class ErrorCreateUser extends AuthState{
   ErrorCreateUser({required this.error});
 }
 class ChangePasswordVisibility extends AuthState{}
+
+
+class GetUserSuccessState extends AuthState{
+ final UserModel model;
+
+  GetUserSuccessState({required this.model});
+}
+class GetUserLoadingState extends AuthState{}
+class GetUserErrorState extends AuthState{
+  final String error;
+
+  GetUserErrorState({required this.error});
+}
+
+
+class ChangeBottomNav extends AuthState{}
+class SocialNewPostState extends AuthState{}

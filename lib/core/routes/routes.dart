@@ -10,22 +10,26 @@ class RouteGenerator{
     final args = settings.arguments;
 
     switch (settings.name){
-      case LoginScreen.routeName : return MaterialPageRoute(builder: (context) => const LoginScreen());
+      case '/' : return MaterialPageRoute(builder: (context) => const LoginScreen());
       case RegisterScreen.routeName : return MaterialPageRoute(builder: (context)=> const RegisterScreen());
       case HomeScreen.routeName : return MaterialPageRoute(builder: (context)=> const HomeScreen(),maintainState: false);
       case AddPostScreen.routeName : return MaterialPageRoute(builder: (context)=> const AddPostScreen());
-      default: return _errorRoute();
+      default: return MaterialPageRoute(builder: (context)=> const ErrorScreen());
     }
   }
+}
 
-  static Route<dynamic> _errorRoute() {
-    return MaterialPageRoute(builder: (context){
-      return Scaffold(
-        appBar: AppBar(title: const Text('Error Screen'),),
-        body: const Center(
-          child: Text('Error Screen'),
-        ),
-      );
-    });
+
+class ErrorScreen extends StatelessWidget {
+  const ErrorScreen({Key? key}) : super(key: key);
+static const routeName ='/error';
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Error Screen'),),
+      body: const Center(
+        child: Text('Error Screen'),
+      ),
+    );
   }
 }
