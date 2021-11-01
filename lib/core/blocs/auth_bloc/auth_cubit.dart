@@ -56,8 +56,6 @@ void checkData(){
         email: email,
         phone: phone,
         name: name,
-        // image: 'image',
-        // bio: 'bio',
       );
       navigateAndRemove(context: context, namedRoute: namedRoute);
       emit(SuccessRegisterState());
@@ -71,8 +69,6 @@ void checkData(){
   void userCreate(
       {required String name,
       required String phone,
-      // required String image,
-      // required String bio,
       required String email,
       required String uId}) {
     emit(LoadingCreateUser());
@@ -119,7 +115,6 @@ void checkData(){
 
   Future<void> getUserData() async {
     emit(GetUserLoadingState());
-    // print(FirebaseAuth.instance.currentUser!.phoneNumber);
     FirebaseFirestore.instance
         .collection('users')
         .doc(userId)
@@ -251,7 +246,6 @@ void checkData(){
   void uploadCoverImage({required String name,
     required String phone,
     required String bio,}) {
-    emit(UploadLodingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(coverImage.path).pathSegments.last}')
@@ -267,56 +261,6 @@ void checkData(){
       emit(CoverImageUploadedErrorState());
     });
   }
-//update
-//   void updateUserImages({
-//     required String name,
-//     required String phone,
-//     required String bio,
-//     String? profileCover,
-//     String? profileImage,
-//   }) async {
-//     if (image && cover) {
-//       uploadPhotoImage(phone: phone, name: name, bio: bio,
-//           // cover: profileCover ?? userModel.cover,
-//           // profileImage: profileImage?? userModel.image
-//       );uploadCoverImage(
-//           phone: phone, name: name, bio: bio,
-//           // cover: profileCover ?? userModel.cover,
-//           // profileImage: profileImage?? userModel.image
-//       );
-//       updateUserData(phone: phone, name: name, bio: bio,
-//           cover: profileCover ?? userModel.cover,
-//           profileImage: profileImage?? userModel.image
-//       );
-//     }
-//     else if (cover) {
-//       uploadCoverImage(phone: phone, name: name, bio: bio,
-//           // cover: profileCover ?? userModel.cover,
-//           // profileImage: profileImage?? userModel.image
-//       );
-//       updateUserData(phone: phone, name: name, bio: bio,
-//           cover: profileCover ?? userModel.cover,
-//           profileImage: profileImage?? userModel.image
-//
-//       );
-//     }
-//     else if(image){
-//       uploadPhotoImage(phone: phone, name: name, bio: bio,
-//           // cover: profileCover ?? userModel.cover,
-//           // profileImage: profileImage?? userModel.image
-//       );
-//       updateUserData(phone: phone, name: name, bio: bio,
-//           cover: profileCover ?? userModel.cover,
-//           profileImage: profileImage?? userModel.image
-//       );
-//     }
-//     else {
-//       updateUserData(phone: phone, name: name, bio: bio,
-//           // cover: coverImageUrl, profileImage: profileImageUrl
-//       );
-//     }
-//   }
-  //update user data (bio, name, phone)
   void updateUserData({
     required String name,
     required String phone,
@@ -324,6 +268,7 @@ void checkData(){
      String? cover,
      String? profileImage,
   }){
+    emit(UploadLoadingState());
     UserModel model = UserModel(
       name: name,
       email: userModel.email,

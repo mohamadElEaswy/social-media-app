@@ -33,12 +33,9 @@ class EditScreen extends StatelessWidget {
                     if (cubit.cover) {
                       cubit.uploadCoverImage(
                         name: nameController.text,
-                        // email: cubit.model.email,
                         phone: phoneController.text,
                         bio: bioController.text,
-                        // uId: cubit.model.uId.toString(),
-                        // coverImageUrl: cubit.model.cover,
-                        // profileImageUrl: cubit.model.cover,
+
                       );
                     }
                     if (cubit.image) {
@@ -47,7 +44,9 @@ class EditScreen extends StatelessWidget {
                         phone: phoneController.text,
                         bio: bioController.text,
                       );
-                    }
+                    }else{cubit.updateUserData(name: nameController.text,
+                      phone: phoneController.text,
+                      bio: bioController.text,);}
                   },
                   child: const Text('UPDATE')),
               const SizedBox(width: 10.0)
@@ -57,7 +56,10 @@ class EditScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                if (state is UploadLodingState) const LinearProgressIndicator(),
+                if (state is UploadLoadingState) const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: LinearProgressIndicator(),
+                ),
                 SizedBox(
                   height: 220.0,
                   child: Stack(

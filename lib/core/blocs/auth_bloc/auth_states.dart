@@ -70,4 +70,4 @@ class ProfileImageUploadedSuccessState extends AuthState{}
 class ProfileImageUploadedErrorState extends AuthState{}
 
 class UploadErrorState extends AuthState{}
-class UploadLodingState extends AuthState{}
+class UploadLoadingState extends AuthState{}
