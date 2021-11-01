@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_cubit.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_states.dart';
+import 'package:untitled/core/routes/constant_route_functions.dart';
+import 'package:untitled/ui/screens/edit_screen/edit_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -102,7 +104,9 @@ class SettingScreen extends StatelessWidget {
                 children: [
                   Expanded(child: OutlinedButton(onPressed: (){},child: const Text('add photo'),),),
                   const SizedBox(width: 5),
-                  SizedBox(child: OutlinedButton(onPressed: (){},child: const Icon(Icons.edit),),),
+                  SizedBox(child: OutlinedButton(onPressed: (){
+                    navigate(context: context, namedRoute: EditScreen.routeName);
+                  },child: const Icon(Icons.edit),),),
                 ],
               )
             ],

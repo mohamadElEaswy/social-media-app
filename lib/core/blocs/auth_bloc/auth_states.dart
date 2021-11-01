@@ -51,4 +51,14 @@ class GetUserErrorState extends AuthState{
 
 
 class ChangeBottomNav extends AuthState{}
+
+
 class SocialNewPostState extends AuthState{}
+
+
+
+class ProfileImagePickedSuccessState extends AuthState{}
+class ProfileImagePickedErrorState extends AuthState{}
+
+class CoverImagePickedSuccessState extends AuthState{}
+class CoverImagePickedErrorState extends AuthState{}

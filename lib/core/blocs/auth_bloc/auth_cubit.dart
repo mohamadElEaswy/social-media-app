@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:untitled/config/theme/icon_broken.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_states.dart';
 import 'package:untitled/core/data/end_points.dart';
@@ -187,6 +190,22 @@ class AuthCubit extends Cubit<AuthState> {
     } else {
       currentIndex = index;
       emit(ChangeBottomNav());
+    }
+  }
+
+bool image= false;
+  File? profileImage;
+  final ImagePicker picker = ImagePicker();
+  Future<void> getProfileImage() async {
+    final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if(pickedImage != null){
+      profileImage = File(pickedImage.path);
+      image = true;
+      emit(ProfileImagePickedSuccessState());
+    }else{
+      image = false;
+      print('error no image selected');
+      emit(ProfileImagePickedErrorState());
     }
   }
 }
