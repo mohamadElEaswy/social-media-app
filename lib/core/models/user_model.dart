@@ -5,7 +5,7 @@ class UserModel {
   late String image;
   late String cover;
   late String bio;
-  late String uId;
+  late String? uId;
 
   UserModel(
       {required this.name,
@@ -14,7 +14,7 @@ class UserModel {
       this.image = '',
       this.cover = '',
       this.bio = '',
-      required this.uId});
+        this.uId});
 
   UserModel.fromJson(Map<String, dynamic>? json) {
     name = json!['name'] as String;

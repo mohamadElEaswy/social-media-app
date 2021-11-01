@@ -31,7 +31,7 @@ class SettingScreen extends StatelessWidget {
                         height: 180,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: NetworkImage(cubit.model.cover),
+                                image: NetworkImage(cubit.userModel.cover),
                                 fit: BoxFit.cover),
                             borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(4.0),
@@ -44,15 +44,15 @@ class SettingScreen extends StatelessWidget {
                           Theme.of(context).scaffoldBackgroundColor,
                       child: CircleAvatar(
                         radius: 60.0,
-                        backgroundImage: NetworkImage(cubit.model.image),
+                        backgroundImage: NetworkImage(cubit.userModel.image),
                       ),
                     )
                   ],
                 ),
               ),
               const SizedBox(height: 10.0),
-              Text(cubit.model.name, style: Theme.of(context).textTheme.headline6,),
-              Text(cubit.model.bio,  style: Theme.of(context).textTheme.caption,),
+              Text(cubit.userModel.name, style: Theme.of(context).textTheme.headline6,),
+              Text(cubit.userModel.bio,  style: Theme.of(context).textTheme.caption,),
               const SizedBox(height: 10.0),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

@@ -62,3 +62,12 @@ class ProfileImagePickedErrorState extends AuthState{}
 
 class CoverImagePickedSuccessState extends AuthState{}
 class CoverImagePickedErrorState extends AuthState{}
+
+class CoverImageUploadedSuccessState extends AuthState{}
+class CoverImageUploadedErrorState extends AuthState{}
+
+class ProfileImageUploadedSuccessState extends AuthState{}
+class ProfileImageUploadedErrorState extends AuthState{}
+
+class UploadErrorState extends AuthState{}
+class UploadLodingState extends AuthState{}
