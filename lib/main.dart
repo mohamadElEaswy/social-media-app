@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
       providers: [
         //user management cubit (login and register)
         BlocProvider<AuthCubit>(
-          create: (BuildContext context) => AuthCubit()..checkData(),
+          create: (BuildContext context) => AuthCubit()..checkData()..getPosts(),
         ),
         // after login or register cubit
         // BlocProvider<AppCubit>(

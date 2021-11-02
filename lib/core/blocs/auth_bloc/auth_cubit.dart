@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +11,7 @@ import 'package:untitled/core/blocs/auth_bloc/auth_states.dart';
 import 'package:untitled/core/data/end_points.dart';
 import 'package:untitled/core/data/local/cache_helper.dart';
 import 'package:untitled/core/data/local/constant_uid.dart';
+import 'package:untitled/core/models/post_model.dart';
 import 'package:untitled/core/models/user_model.dart';
 import 'package:untitled/core/routes/constant_route_functions.dart';
 import 'package:untitled/ui/screens/add_post/add_post.dart';
@@ -33,10 +33,14 @@ class AuthCubit extends Cubit<AuthState> {
     obscureText = !obscureText;
     emit(ChangePasswordVisibility());
   }
+
   // get user data in the app start if token exists inside sharedPreferences
-void checkData(){
-    if(userId!.isNotEmpty){getUserData();}
-}
+  void checkData() {
+    if (userId!.isNotEmpty) {
+      getUserData();
+    }
+  }
+
   //register method in fire base
   void userRegister(
       {required String name,
@@ -187,6 +191,7 @@ void checkData(){
       emit(ChangeBottomNav());
     }
   }
+
 //choose the profile image from your phone
   bool image = false;
   bool cover = false;
@@ -206,6 +211,7 @@ void checkData(){
       emit(ProfileImagePickedErrorState());
     }
   }
+
 //choose the cover image from your phone
   Future<void> getCoverImage() async {
     final XFile? pickedImage =
@@ -222,9 +228,11 @@ void checkData(){
   }
 
 //upload profile photo into firebase storage
-  void uploadPhotoImage({required String name,
+  void uploadPhotoImage({
+    required String name,
     required String phone,
-    required String bio,}) {
+    required String bio,
+  }) {
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(profileImage.path).pathSegments.last}')
@@ -232,7 +240,12 @@ void checkData(){
         .then((value) {
       value.ref.getDownloadURL().then((value) {
         print(value);
-        updateUserData(phone: phone,name: name,bio: bio,profileImage: value, cover: userModel.cover);
+        updateUserData(
+            phone: phone,
+            name: name,
+            bio: bio,
+            profileImage: value,
+            cover: userModel.cover);
         emit(ProfileImageUploadedSuccessState());
       }).catchError((e) {
         emit(ProfileImageUploadedErrorState());
@@ -243,16 +256,23 @@ void checkData(){
   }
 //upload cover photo into firebase storage
 
-  void uploadCoverImage({required String name,
+  void uploadCoverImage({
+    required String name,
     required String phone,
-    required String bio,}) {
+    required String bio,
+  }) {
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(coverImage.path).pathSegments.last}')
         .putFile(coverImage)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        updateUserData(phone: phone,name: name,bio: bio,cover: value, profileImage: userModel.image);
+        updateUserData(
+            phone: phone,
+            name: name,
+            bio: bio,
+            cover: value,
+            profileImage: userModel.image);
         emit(CoverImageUploadedSuccessState());
       }).catchError((e) {
         emit(CoverImageUploadedErrorState());
@@ -261,13 +281,14 @@ void checkData(){
       emit(CoverImageUploadedErrorState());
     });
   }
+
   void updateUserData({
     required String name,
     required String phone,
     required String bio,
-     String? cover,
-     String? profileImage,
-  }){
+    String? cover,
+    String? profileImage,
+  }) {
     emit(UploadLoadingState());
     UserModel model = UserModel(
       name: name,
@@ -288,6 +309,119 @@ void checkData(){
     }).catchError((e) {
       print(e.toString());
       emit(UploadErrorState());
+    });
+  }
+
+  void removeImage() {
+    postImage = null;
+    postImageExist = false;
+    emit(RemovePostImageState());
+  }
+
+  bool postImageExist = false;
+  late File? postImage;
+  Future<void> getPostImage() async {
+    final XFile? pickedImage =
+        await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      postImage = File(pickedImage.path);
+      postImageExist = true;
+      emit(PostImagePickedSuccessState());
+    } else {
+      postImageExist = false;
+      print('error no image selected');
+      emit(PostImagePickedErrorState());
+    }
+  }
+
+  void uploadPostImage({
+    required String dateTime,
+    required String text,
+  }) {
+    emit(CreatePostLoading());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
+        .putFile(postImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        createPost(
+          text: text,
+          dateTime: dateTime,
+          postImage: value,
+        );
+        emit(CreatePostSuccess());
+      }).catchError((e) {
+        emit(CreatePostError());
+      });
+    }).catchError((e) {
+      emit(CreatePostError());
+    });
+  }
+
+  void createPost({
+    required String dateTime,
+    required String text,
+    String? postImage,
+  }) {
+    PostModel model = PostModel(
+        name: userModel.name,
+        uId: userModel.uId,
+        image: userModel.image,
+        text: text,
+        dateTime: dateTime,
+        postImage: postImage ?? '');
+    FirebaseFirestore.instance.collection('posts').add(model.toMap())
+        // .doc('1')
+        // .set(model.toMap())
+        .then((value) {
+      emit(CreatePostSuccess());
+    }).catchError((e) {
+      emit(CreatePostError());
+    });
+  }
+
+  List<PostModel> posts = [];
+  List<String> postId = [];
+  List<int> likes = [];
+  void getPosts() {
+    emit(GetPostLoading());
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
+      // ignore: avoid_function_literals_in_foreach_calls
+      value.docs.forEach((element) {
+        element.reference.collection('likes').get().then((value) {
+          likes.add(value.docs.length);
+          posts.add(PostModel.fromJson(element.data()));
+          postId.add(element.id);
+        }).catchError((e) {});
+      });
+      emit(GetPostSuccess());
+    }).catchError((e) {
+      emit(GetPostError());
+    });
+  }
+
+  void postsLike({required String postId}) {
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('likes')
+        .doc(userModel.uId)
+        .set({'like': true}).then((value) {
+      emit(LikeAdded());
+    }).catchError((e) {
+    });
+  }
+
+  void postLikeRemove({required String postId}){
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('likes')
+        .doc(userModel.uId)
+        .set({'like': false}).then((value) {
+      emit(LikeRemoved());
+    }).catchError((e) {
     });
   }
 }

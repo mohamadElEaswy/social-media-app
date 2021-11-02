@@ -71,3 +71,28 @@ class ProfileImageUploadedErrorState extends AuthState{}
 
 class UploadErrorState extends AuthState{}
 class UploadLoadingState extends AuthState{}
+
+
+
+
+class CreatePostLoading extends AuthState{}
+class CreatePostSuccess extends AuthState{}
+class CreatePostError extends AuthState{}
+
+
+class PostImagePickedSuccessState extends AuthState{}
+class PostImagePickedErrorState extends AuthState{}
+
+
+class RemovePostImageState extends AuthState{}
+
+
+
+class GetPostLoading extends AuthState{}
+class GetPostSuccess extends AuthState{}
+class GetPostError extends AuthState{}
+
+
+class LikeAdded extends AuthState{}
+
+class LikeRemoved extends AuthState{}

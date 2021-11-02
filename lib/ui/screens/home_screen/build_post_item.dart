@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/config/theme/constant_colors.dart';
 import 'package:untitled/config/theme/icon_broken.dart';
+import 'package:untitled/core/blocs/auth_bloc/auth_cubit.dart';
 
 class BuildPostItem extends StatelessWidget {
-  const BuildPostItem({Key? key}) : super(key: key);
-
+  const BuildPostItem({Key? key, required this.cubit, required this.index})
+      : super(key: key);
+  final AuthCubit cubit;
+  final int index;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -14,13 +17,13 @@ class BuildPostItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 25.0,
-                  backgroundImage: NetworkImage(
-                      'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg'),
+                  backgroundImage: NetworkImage(cubit.posts[index].image),
                 ),
                 const SizedBox(width: 15.0),
                 Expanded(
@@ -28,13 +31,13 @@ class BuildPostItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        children: const [
+                        children: [
                           Text(
-                            'Abdullah Mansour',
-                            style: TextStyle(height: 1.4),
+                            cubit.posts[index].name,
+                            style: const TextStyle(height: 1.4),
                           ),
-                          SizedBox(width: 5.0),
-                          Icon(
+                          const SizedBox(width: 5.0),
+                          const Icon(
                             Icons.check_circle,
                             color: defaultColor,
                             size: 16.0,
@@ -42,7 +45,7 @@ class BuildPostItem extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        'January 21, 2021 at 11:00 pm',
+                        cubit.posts[index].dateTime.toString(),
                         style: Theme.of(context)
                             .textTheme
                             .caption!
@@ -70,7 +73,7 @@ class BuildPostItem extends StatelessWidget {
               ),
             ),
             Text(
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+              cubit.posts[index].text,
               style: Theme.of(context).textTheme.subtitle1,
             ),
             Padding(
@@ -122,16 +125,15 @@ class BuildPostItem extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
+            if(cubit.posts[index].postImage != "")
+              Container(
               height: 140.0,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4.0),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                    'https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg',
-                  ),
-                  fit: BoxFit.cover,
+                image: DecorationImage(
+                  image: NetworkImage(cubit.posts[index].postImage),
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -141,26 +143,25 @@ class BuildPostItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: InkWell(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 5.0,
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              IconBroken.Heart,
-                              size: 16.0,
-                              color: Colors.red,
-                            ),
-                            const SizedBox(width: 5.0),
-                            Text(
-                              '120',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                          ],
-                        ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            IconBroken.Heart,
+                            size: 16.0,
+                            color: Colors.red,
+                          ),
+                          const SizedBox(width: 5.0),
+                          Text(
+                            'Like ${cubit.likes[index]}',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ],
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        if(cubit.likes[index] == 0) {
+                          cubit.postsLike(postId: cubit.postId[index]);
+                        }else{cubit.postLikeRemove(postId: cubit.postId[index]);}
+                      },
                     ),
                   ),
                   Expanded(
@@ -177,7 +178,7 @@ class BuildPostItem extends StatelessWidget {
                             ),
                             const SizedBox(width: 5.0),
                             Text(
-                              '120 comment',
+                              '0 comment',
                               style: Theme.of(context).textTheme.caption,
                             ),
                           ],
@@ -203,11 +204,9 @@ class BuildPostItem extends StatelessWidget {
                   child: InkWell(
                     child: Row(
                       children: [
-                        const CircleAvatar(
+                         CircleAvatar(
                           radius: 18.0,
-                          backgroundImage: NetworkImage(
-                            'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg',
-                          ),
+                          backgroundImage: NetworkImage(cubit.userModel.image),
                         ),
                         const SizedBox(width: 15.0),
                         Text(
@@ -220,23 +219,7 @@ class BuildPostItem extends StatelessWidget {
                     onTap: () {},
                   ),
                 ),
-                InkWell(
-                  child: Row(
-                    children: [
-                      const Icon(
-                        IconBroken.Heart,
-                        size: 16.0,
-                        color: Colors.red,
-                      ),
-                      const SizedBox(width: 5.0),
-                      Text(
-                        'Like',
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                    ],
-                  ),
-                  onTap: () {},
-                ),
+
               ],
             ),
           ],

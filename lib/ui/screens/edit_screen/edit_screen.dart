@@ -16,14 +16,11 @@ class EditScreen extends StatelessWidget {
       builder: (context, state) {
         AuthCubit cubit = AuthCubit.get(context);
         final TextEditingController nameController = TextEditingController();
-        // TextEditingController emailController = TextEditingController();
         final TextEditingController phoneController = TextEditingController();
         final TextEditingController bioController = TextEditingController();
-
         nameController.text = cubit.userModel.name;
         bioController.text = cubit.userModel.bio;
         phoneController.text = cubit.userModel.phone;
-        // emailController.text = cubit.model.email;
         return Scaffold(
           appBar: AppBar(
             title: const Text('edit your profile information'),

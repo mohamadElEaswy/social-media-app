@@ -9,6 +9,7 @@ import 'package:untitled/core/routes/constant_route_functions.dart';
 import 'package:untitled/ui/screens/add_post/add_post.dart';
 import 'package:untitled/ui/screens/home_screen/build_post_item.dart';
 import 'package:untitled/ui/widgets/snack_bar.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,7 +21,9 @@ class HomeScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is GetUserSuccessState) {
           SnackBars.buildSnackBar(
-              context: context, text: 'welcome ' + state.model.name, backgroundColor: Colors.green);
+              context: context,
+              text: 'welcome ' + state.model.name,
+              backgroundColor: Colors.green);
         }
         if (state is SocialNewPostState) {
           navigate(context: context, namedRoute: AddPostScreen.routeName);
@@ -37,7 +40,7 @@ class HomeScreen extends StatelessWidget {
             },
           ),
           appBar: AppBar(
-              leading:  Container(),
+              leading: Container(),
               actions: [
                 IconButton(
                   icon: const Icon(
@@ -65,63 +68,81 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          //check if the email is verified
-          //if it's not verified show the alert message
-          if (!FirebaseAuth.instance.currentUser!.emailVerified)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              height: 40.0,
-              width: double.infinity - 20,
-              color: Colors.amber[400],
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.error,
-                    color: Colors.redAccent,
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        AuthCubit cubit = AuthCubit.get(context);
+        return ConditionalBuilder(
+          condition: state is! GetPostLoading,
+          builder: (context) => SingleChildScrollView(physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                //check if the email is verified
+                // if it's not verified show the alert message
+                if (!FirebaseAuth.instance.currentUser!.emailVerified)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    height: 40.0,
+                    width: double.infinity - 20,
+                    color: Colors.amber[400],
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.error,
+                          color: Colors.redAccent,
+                        ),
+                        const SizedBox(
+                          width: 20.0,
+                        ),
+                        const Expanded(
+                            child: Text('Your email is not verified',
+                                style: TextStyle(color: Colors.black))),
+                        TextButton(
+                          onPressed: () {
+//send email verification
+                            FirebaseAuth.instance.currentUser!
+                                .sendEmailVerification();
+                          },
+                          child: const Text('verify now'),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
-                  const Expanded(
-                      child: Text('Your email is not verified',
-                          style: TextStyle(color: Colors.black))),
-                  TextButton(
-                    onPressed: () {
-                      //send email verification
-                      FirebaseAuth.instance.currentUser!
-                          .sendEmailVerification();
-                    },
-                    child: const Text('verify now'),
-                  ),
-                ],
-              ),
-            ),
-          const SizedBox(height: 10.0),
-          Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              Card(
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Image(
-                  image: NetworkImage(imgUrl),
-                  fit: BoxFit.fitWidth,
-                  height: 180,
-                  width: double.infinity,
+                const SizedBox(height: 10.0),
+                Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    Card(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: Image(
+                        image: NetworkImage(imgUrl),
+                        fit: BoxFit.contain,
+                        width: double.infinity,
+                      ),
+                    ),
+                    Text(
+                      'communicate with friends',
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: Colors.black54,
+                          backgroundColor: Colors.white60),
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                'communicate with friends',
-                style: Theme.of(context).textTheme.headline5!.copyWith(
-                    color: Colors.black54, backgroundColor: Colors.white60),
-              ),
-            ],
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) => BuildPostItem(index: index, cubit: cubit,),
+                  itemCount: cubit.posts.length,
+                ),
+
+              ],
+            ),
           ),
-          const BuildPostItem(),
-        ],
-      ),
+          fallback: (context) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 }
