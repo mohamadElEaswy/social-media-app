@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-void navigate({required BuildContext context, required String namedRoute}) {
-  Navigator.pushNamed(context, namedRoute);
+
+void navigate({required BuildContext context, required String namedRoute, arguments}) {
+  Navigator.pushNamed(context, namedRoute,arguments: arguments);
 }
 
 void navigateAndRemove(

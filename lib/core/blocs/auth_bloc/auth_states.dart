@@ -96,3 +96,17 @@ class GetPostError extends AuthState{}
 class LikeAdded extends AuthState{}
 
 class LikeRemoved extends AuthState{}
+
+
+class GetUsersLoading extends AuthState{}
+class GetUsersSuccess extends AuthState{}
+class GetUsersError extends AuthState{}
+
+
+
+class SendMessageSuccess extends AuthState{}
+class SendMessageError extends AuthState{}
+
+class GetMessageSuccess extends AuthState{}
+class GetMessageError extends AuthState{}
+

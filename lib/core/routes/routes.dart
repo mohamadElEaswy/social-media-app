@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/ui/screens/add_post/add_post.dart';
+import 'package:untitled/ui/screens/chat_details/chat_details.dart';
 import 'package:untitled/ui/screens/edit_screen/edit_screen.dart';
 import 'package:untitled/ui/screens/home_screen/home_screen.dart';
 import 'package:untitled/ui/screens/login_screen/login_screen.dart';
@@ -16,6 +17,7 @@ class RouteGenerator{
       case HomeScreen.routeName : return MaterialPageRoute(builder: (context)=> const HomeScreen(),maintainState: false);
       case AddPostScreen.routeName : return MaterialPageRoute(builder: (context)=> const AddPostScreen());
       case EditScreen.routeName : return MaterialPageRoute(builder: (context)=> const EditScreen());
+      case ChatDetailsScreen.routeName : return MaterialPageRoute(builder: (context)=> ChatDetailsScreen(userModel: args,));
       default: return MaterialPageRoute(builder: (context)=> const ErrorScreen());
     }
   }
