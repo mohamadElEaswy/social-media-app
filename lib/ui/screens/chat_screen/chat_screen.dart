@@ -18,7 +18,7 @@ class ChatScreen extends StatelessWidget {
         return ConditionalBuilder(
             condition: cubit.users.isNotEmpty,
             builder: (context)=> ListView.separated(
-                itemBuilder: (context, index) => BuildUserChatItem(cubit: cubit,index: index,),
+                itemBuilder: (context, index) => BuildUserChatItem(cubit: cubit,index: index),
                 separatorBuilder: (context, index)=>const SizedBox(height: 10.0),
                 itemCount: cubit.users.length,
             ),
@@ -40,7 +40,7 @@ final int index;
       child: InkWell(
         onTap: (){
           navigate(context: context, namedRoute:
-        ChatDetailsScreen.routeName,arguments: cubit.users[index],);},
+        ChatDetailsScreen.routeName,arguments: cubit.users[index]);},
         child: Row(
           children: [
             CircleAvatar(

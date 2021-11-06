@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/config/theme/constant_colors.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_cubit.dart';
 import 'package:untitled/core/blocs/auth_bloc/auth_states.dart';
+import 'package:untitled/core/data/local/constant_uid.dart';
 import 'package:untitled/core/models/message_model.dart';
 
 final TextEditingController messagesController = TextEditingController();
@@ -20,11 +21,10 @@ class ChatDetailsScreen extends StatelessWidget {
       builder: (BuildContext context) {
         AuthCubit.get(context).getMessages(receiverId: userModel.uId!);
         return BlocConsumer<AuthCubit, AuthState>(
-          listener: (context, state) {
-
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             AuthCubit cubit = AuthCubit.get(context);
+
             DateTime dateTime = DateTime.now();
             return Scaffold(
               appBar: AppBar(
@@ -42,8 +42,7 @@ class ChatDetailsScreen extends StatelessWidget {
               ),
               body: ConditionalBuilder(
                 condition: true,
-                fallback: (context) =>
-                    const Center(child: CircularProgressIndicator()),
+                fallback: (context) => const Center(child: CircularProgressIndicator()),
                 builder: (context) => Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
@@ -53,18 +52,14 @@ class ChatDetailsScreen extends StatelessWidget {
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 10.0),
                           itemBuilder: (context, index) {
-                            if (cubit.userModel.uId ==
-                                cubit.messages[index].senderId) {
-                              return ReceivedMessages(
-                                message: cubit.messages[index],
-                              );
+                            if (userId ==
+                                cubit.messages[index].receiverId) {
+                              return ReceivedMessages(message: cubit.messages[index]);
                             }
                             // (cubit.userModel.uId !=
                             //     cubit.messages[index].receiverId)
                             {
-                              return MyMessage(
-                                message: cubit.messages[index],
-                              );
+                              return MyMessage(message: cubit.messages[index]);
                             }
                           },
                           itemCount: cubit.messages.length,
@@ -133,7 +128,7 @@ class ReceivedMessages extends StatelessWidget {
               topStart: Radius.circular(10.0),
               topEnd: Radius.circular(10.0),
             )),
-        child: Text(message.text),
+        child: Text(message.text!),
         padding: const EdgeInsets.symmetric(
           vertical: 5.0,
           horizontal: 10.0,
@@ -158,7 +153,7 @@ class MyMessage extends StatelessWidget {
               topStart: Radius.circular(10.0),
               topEnd: Radius.circular(10.0),
             )),
-        child: Text(message.text),
+        child: Text(message.text!),
         padding: const EdgeInsets.symmetric(
           vertical: 5.0,
           horizontal: 10.0,

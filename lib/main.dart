@@ -16,7 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Bloc.observer = MyBlocObserver();
-  var token = await FirebaseMessaging.instance.getToken();
+  // var token = await FirebaseMessaging.instance.getToken();
   FirebaseMessaging.onMessage.listen((event) {
     print(event.data.toString());
   });
