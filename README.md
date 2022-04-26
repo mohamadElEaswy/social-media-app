@@ -12,9 +12,18 @@ it's a simple social media app with a simple chatting.
 
 
 ## General info
--google signin and regiester.
--email sign in and regiester.
--
+
+I start developing this app to train my skills with firebase, and Flutter, while I was studying Flutter.  
+it's a simple social media app with a simple chatting.
+
+###Features
+
+* Google login and regiester.
+* email login and regiester.
+* chatting
+* posts
+* email confirmation
+* 
 
 
 ## Technologies
@@ -54,9 +63,7 @@ flutter pub get
 ```
 flutter run
 ```
-[Flutter logo]: https://github.com/flutter/website/blob/archived-master/src/_assets/image/flutter-lockup-bg.jpg?raw=true
 
-[Build Status - Cirrus]: https://api.cirrus-ci.com/github/flutter/flutter.svg
 
 ## Conclusion
 
