@@ -7,7 +7,7 @@ it's a simple social media app with a simple chatting.
 
 * [General info](#general-info)
 * [Technologies](#Technologies)
-* [Setup](#Setup)
+* [How to use](#How-to-use)
 * [Status](#Status)
 
 
@@ -15,8 +15,13 @@ it's a simple social media app with a simple chatting.
 -google signin and regiester.
 -email sign in and regiester.
 -
+
+
 ## Technologies
+
+* Flutter:  2.12.0 <3.0.0
 * lint: ^1.7.2
+* flutter_lints: ^1.0.0
 * bloc: ^7.2.1
 * flutter_bloc: ^7.3.1
 * dio: ^4.0.0
@@ -29,9 +34,30 @@ it's a simple social media app with a simple chatting.
 * firebase_storage: ^10.0.5
 * conditional_builder_null_safety: ^0.0.6
 * firebase_messaging: ^10.0.8
--Bloc.
--Firebase.
--on generated routes.
--OOP.
--
-## Setup
+* cupertino_icons: ^1.0.2
+* fonts:  'Jannah'
+
+
+## How to use
+
+### Step 1:
+Download or clone this repo:
+
+### Step 2:
+
+```
+flutter pub get 
+```
+
+### Step 3:
+
+```
+flutter run
+```
+[Flutter logo]: https://github.com/flutter/website/blob/archived-master/src/_assets/image/flutter-lockup-bg.jpg?raw=true
+
+[Build Status - Cirrus]: https://api.cirrus-ci.com/github/flutter/flutter.svg
+
+## Conclusion
+
+There is no specific folder structure for this app, it was just a training to learn how to use these technologies. 
